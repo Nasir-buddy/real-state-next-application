@@ -36,7 +36,7 @@ const Navbar = () => {
                 <div className='flex items-center gap-5'>
                     <Link 
                     href="/signin">
-                        <Button variant="outline"
+                        <Button variant="secondary"
                         className='text-white border-white bg-transparent hover:bg-white hover:text-primary-700 rounded-xl'
                         >
                             Sign In
