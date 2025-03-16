@@ -15,7 +15,11 @@ const HeroSection = () => {
         className="object-cover object-center"
         priority
       />
-      <div className="absolute inset-0 bg-black opacity-60">
+      {/* Separate overlay div with opacity */}
+      <div className="absolute inset-0 bg-black opacity-60"></div>
+      
+      {/* Content div with full opacity */}
+      <div className="absolute inset-0">
         <div className="flex flex-col items-center justify-center h-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
