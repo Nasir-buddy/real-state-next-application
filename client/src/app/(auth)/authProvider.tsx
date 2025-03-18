@@ -69,6 +69,22 @@ const components = {
                     </RadioGroupField>
                 </>
             )
+        },
+        Footer() {
+            const { toSignIn } = useAuthenticator();
+            return (
+                <View className='text-center mt-4'>
+                    <p className='text-muted-foreground '>
+                        Don&apos;t have an account?{" "}
+                        <button
+                            onClick={toSignIn}
+                            className='text-primary hover:underline bg-transparent border-none p-0'
+                        >
+                            Sign In here
+                        </button>
+                    </p>
+                </View>
+            )
         }
     }
 }
