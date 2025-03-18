@@ -1,7 +1,7 @@
 import React from 'react';
 import { Amplify } from 'aws-amplify';
 
-import { Authenticator, components, Heading, useAuthenticator, View } from '@aws-amplify/ui-react';
+import { Authenticator, Heading, Radio, RadioGroupField, useAuthenticator, View } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { FormField } from '@/components/ui/form';
 
@@ -37,13 +37,37 @@ const components = {
                     <p className='text-muted-foreground '>
                         Don&apos;t have an account?{" "}
                         <button
-                            onClick={toSignUp}  
+                            onClick={toSignUp}
                             className='text-primary hover:underline bg-transparent border-none p-0'
                         >
                             Sign up here
                         </button>
                     </p>
                 </View>
+            )
+        }
+    },
+    SignUp: {
+        FormFields() {
+            const { validationErrors } = useAuthenticator();
+            return (
+                <>
+                    <Authenticator.SignUp.FormFields />
+                    <RadioGroupField
+                        legend="Role"
+                        name="custom:role"
+                        errorMessage={validationErrors?.['custom:role']}
+                        hasError={!!validationErrors?.['custom:role']}
+                        isRequired
+                    >
+                        <Radio value='tenant'>
+                            Tenant
+                        </Radio>
+                        <Radio value='manager'>
+                            Manager
+                        </Radio>
+                    </RadioGroupField>
+                </>
             )
         }
     }
@@ -96,7 +120,7 @@ const Auth = ({ children }: { children: React.ReactNode }) => {
         <div className='h-full'>
             <Authenticator
                 components={components}
-                formFields={FormField}
+                formFields={formFields}
             >
                 {() => <>{children}</>}
             </Authenticator>
