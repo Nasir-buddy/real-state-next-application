@@ -41,6 +41,7 @@ export const api = createApi({
           ) {
               userDetailsResponse = await createNewUserInDatabase(
                 user,
+                idToken,
                 userRole,
                 fetchWithBQ
               )
