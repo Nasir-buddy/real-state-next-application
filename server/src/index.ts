@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import { authmiddleware } from './middleware/authMiddleware';
 import tenantRoutes from './routes/tenantRoutes'
+import managerRoutes from './routes/managerRoutes'
 // Route Import
 
 // Configuration
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/tenants', authmiddleware(['tenant']), tenantRoutes);
+app.use('/manager', authmiddleware(['manager']), managerRoutes);
 // server
 const port = process.env.PORT || 3002;
 app.listen(port, () => {
