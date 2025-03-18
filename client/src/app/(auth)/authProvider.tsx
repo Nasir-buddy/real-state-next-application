@@ -138,6 +138,15 @@ const Auth = ({ children }: { children: React.ReactNode }) => {
     const pathname = usePathname();
     const isAuthPage = pathname.match(/^\/(signin|signup)$/);
     const isDashboardPage = pathname.startsWith("/manager") || pathname.startsWith("/tenants");
+    const isLandingPage = pathname.startsWith("/landing");
+    const isRootPage = pathname === "/";
+
+    // Redirect from root to landing page
+    useEffect(() => {
+        if (isRootPage) {
+            router.push('/landing');
+        }
+    }, [isRootPage, router]);
 
     //Redirect authenticated users away from auth pages
     useEffect(() => {
@@ -146,8 +155,8 @@ const Auth = ({ children }: { children: React.ReactNode }) => {
         }
     }, [user, isAuthPage, router]);
 
-    // Allow access to public pages without authetication
-    if (!isAuthPage && isDashboardPage) {
+    // Allow access to public pages without authentication
+    if (!isAuthPage && (isDashboardPage || isLandingPage || isRootPage)) {
         return <>
             {children}
         </>
