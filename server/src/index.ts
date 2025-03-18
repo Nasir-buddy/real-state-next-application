@@ -5,7 +5,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { authmiddleware } from './middleware/authMiddleware';
-
+import tenantRoutes from './routes/tenantRoutes'
 // Route Import
 
 // Configuration
