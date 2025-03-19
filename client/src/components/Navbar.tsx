@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { SidebarTrigger } from './ui/sidebar'
 
 const Navbar = () => {
   const { data: authUser } = useGetAuthUserQuery();
@@ -35,6 +36,11 @@ const Navbar = () => {
     >
       <div className="flex justify-between items-center w-full h-full py-2 px-4 md:px-8 bg-primary-700 text-white">
         <div className="flex items-center gap-3 md:gap-6">
+            {isDashboardPage && (
+                <div className='md:hidden'>
+                    <SidebarTrigger />
+                </div>
+            )}
           <Link
             href="/"
             className="flex items-center gap-2 focus:outline-none transition-colors duration-200"
