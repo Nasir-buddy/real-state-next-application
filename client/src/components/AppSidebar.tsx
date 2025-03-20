@@ -24,10 +24,10 @@ const AppSidebar = ({ userType }: AppSidebarProps) => {
                 { icon: Settings, label: 'Settings', href: '/managers/settings' },
             ]
             : [
-                { icon: Heart, label: 'Favorites', href: '/renters/favorites' },
-                { icon: FileText, label: 'Applications', href: '/renters/applications' },
-                { icon: HomeIcon, label: 'Residences', href: '/renters/residence' },
-                { icon: Settings, label: 'Settings', href: '/renters/settings' },
+                { icon: Heart, label: 'Favorites', href: '/tenants/favorites' },
+                { icon: FileText, label: 'Applications', href: '/tenants/applications' },
+                { icon: HomeIcon, label: 'Residences', href: '/tenants/residence' },
+                { icon: Settings, label: 'Settings', href: '/tenants/settings' },
             ];
 
     return (

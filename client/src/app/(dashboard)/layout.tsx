@@ -20,13 +20,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   useEffect(() => {
     if (authUser) {
       const userRole = authUser.userRole?.toLowerCase();
-      if (userRole === "manager" && pathname.startsWith('/tenants')
-        || (userRole === "tenant" && pathname.startsWith('/managers'))) {
-        router.push(
-          userRole === 'manager' ?
-            '/managers/properties'
-            : '/tenants/favorites'
-        );
+      // Check if tenant is trying to access manager routes or vice versa
+      const isUnauthorizedAccess = 
+        (userRole === "manager" && pathname.startsWith('/tenants')) ||
+        (userRole === "tenant" && pathname.startsWith('/managers'));
+
+      if (isUnauthorizedAccess) {
+        const defaultRoute = userRole === 'manager' ? '/managers/properties' : '/tenants/favorites';
+        router.replace(defaultRoute);
       } else {
         setIsLoading(false);
       }
