@@ -1,12 +1,13 @@
 'use client';
 import { usePathname } from 'next/navigation'
 import React from 'react'
-import { SidebarHeader, SidebarMenu, SidebarMenuItem, useSidebar } from './ui/sidebar';
-import { Building, FileText, Heart, Menu, Settings, X } from 'lucide-react';
+import { SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from './ui/sidebar';
+import { Building, FileText, Heart, HomeIcon, Menu, Settings, X } from 'lucide-react';
 import { Sidebar } from '@/components/ui/sidebar'
 import Home from '@/app/page';
 import { NAVBAR_HEIGHT } from '@/lib/constants';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 const AppSidebar = ({ userType }: AppSidebarProps) => {
     const pathname = usePathname();
@@ -33,7 +34,7 @@ const AppSidebar = ({ userType }: AppSidebarProps) => {
                     icon: FileText, label: "Applications", href: "/managers/applications"
                 },
                 {
-                    icon: Home, label: "Residences", href: "/tenants/settings"
+                    icon: HomeIcon, label: "Residences", href: "/managers/residence"
                 },
                 {
                     icon: Settings, label: "Settings", href: "/managers/settings"
@@ -87,6 +88,46 @@ const AppSidebar = ({ userType }: AppSidebarProps) => {
                 </SidebarMenuItem>
             </SidebarMenu>
         </SidebarHeader>
+
+        <SidebarContent>
+            <SidebarMenu
+
+            >
+                {navLinks.map((link) => {
+                    const isActive = pathname === link.href;
+                    return (
+                        <SidebarMenuItem key={link.href}>
+                            <SidebarMenuButton
+                                asChild
+                                className={cn(
+                                    "flex items-center px-7 py-7",
+                                    isActive
+                                        ? "bg-gray-100"
+                                        : "text-gray-600 hover:bg-gray-100",
+                                    open ? "text-blue-600" : "ml-[5px"
+                                )}
+                            >
+                                <Link
+                                    href={link.href}
+                                    className='w-full'
+                                    scroll={false}
+                                >
+                                    <div className='flex items-center gap-3'>
+                                        <link.icon
+                                            className={`h-5 w-5${isActive ? "text-blue-600" : "text-gray-600"
+                                                }`}
+                                        />
+                                        <span className={`font-medium ${isActive ? "text-blue-600" : "text-gray-600"}`}>
+                                            {link.label}
+                                        </span>
+                                    </div>
+                                </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    )
+                })}
+            </SidebarMenu>
+        </SidebarContent>
     </Sidebar>
 }
 
