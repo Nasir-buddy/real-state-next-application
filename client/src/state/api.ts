@@ -2,6 +2,8 @@ import { createNewUserInDatabase } from "@/lib/utils";
 import { Manager, Tenant } from "@/types/prismaTypes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { fetchAuthSession, getCurrentUser } from "aws-amplify/auth";
+import { METHODS } from "http";
+import { url } from "inspector";
 import { headers } from "next/headers";
 
 export const api = createApi({
@@ -17,7 +19,7 @@ export const api = createApi({
     }
   }),
   reducerPath: "api",
-  tagTypes: [],
+  tagTypes: ["Managers", "Tenants"],
   endpoints: (build) => ({
     getAuthUser: build.query<User, void>({
       queryFn: async (_, _queryApi, _extraoptions, fetchWithBQ) => {
@@ -39,12 +41,12 @@ export const api = createApi({
           if (userDetailsResponse.error &&
             userDetailsResponse.error.status === 404
           ) {
-              userDetailsResponse = await createNewUserInDatabase(
-                user,
-                idToken,
-                userRole,
-                fetchWithBQ
-              )
+            userDetailsResponse = await createNewUserInDatabase(
+              user,
+              idToken,
+              userRole,
+              fetchWithBQ
+            )
           }
           return {
             data: {
@@ -58,9 +60,18 @@ export const api = createApi({
         }
       }
     }),
+    updateTenantSettings: build.mutation<Tenant, { cognitoId: string } & Partial<Tenant>>({
+      query: ({ cognitoId, ...updateTenant }) => ({
+        url: `tenants/${cognitoId}`,
+        methods: "PUT",
+        body: updateTenant
+      }),
+      invalidatesTags: (result) => [{ type: "Tenants", id: result?.id }],
+    })
   })
 });
 
-export const { 
+export const {
   useGetAuthUserQuery,
+  useUpdateTenantSettingsMutation
 } = api;
