@@ -27,12 +27,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   if (authLoading || isLoading) {
     return <div className="min-h-screen w-full bg-primary-100 flex items-center justify-center">Loading...</div>;
   }
-
-  // If no user role is found, you might want to handle this case
-  if (!authUser?.userRole) {
-    return <div className="min-h-screen w-full bg-primary-100 flex items-center justify-center">User role not found</div>;
-  }
-
+  
   return (
     <div className='h-full w-full'>
       <Navbar />
