@@ -42,6 +42,7 @@ const SettingsForm = ({
                         className='space-y-6'
                     >
                         <CustomFormField name='name' label='Name' disabled={!editMode} />
+                        <CustomFormField name='email' label='Email' type='email' disabled={!editMode} />
                     </form>
                 </Form>
             </div>
