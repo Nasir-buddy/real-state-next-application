@@ -2,7 +2,8 @@
 import Navbar from '@/components/Navbar';
 import { NAVBAR_HEIGHT } from '@/lib/constants'
 import { useGetAuthUserQuery } from '@/state/api';
-import React from 'react'
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react'
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   const { data: authUser } = useGetAuthUserQuery();
