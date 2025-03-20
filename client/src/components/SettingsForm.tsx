@@ -56,7 +56,15 @@ const SettingsForm = ({
 
                             </Button>
                             {
-                                editMode 
+                                editMode && (
+                                    <Button
+                                    type='submit'
+                                    className='bg-secondary-700 text-white hover:bg-primary-800'
+                                    >
+                                      Save Changes
+        
+                                    </Button>
+                               )
                             }
                         </div>
                     </form>
