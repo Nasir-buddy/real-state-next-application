@@ -6,20 +6,16 @@ import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 const layout = ({ children }: { children: React.ReactNode }) => {
-  const { data: authUser } = useGetAuthUserQuery();
- const router = useRouter();
+  const { data: authUser, isLoading: authLoading } = useGetAuthUserQuery();
+  const router = useRouter();
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     if (authUser) {
       const userRole = authUser.userRole?.toLowerCase();
-      if (userRole === "manager" && pathname.startsWith('/tenants')
-        || (userRole === "tenant" && pathname.startsWith('/managers'))) {
-        router.push(
-          userRole === 'manager' ?
-            '/managers/properties'
-            : '/tenants/favorites'
-        );
+      if (userRole === "manager" && pathname.startsWith('/search')
+        || (userRole === "manager" && pathname === '/')) {
+        router.push('/managers/properties', { scroll: false });
       } else {
         setIsLoading(false);
       }
@@ -27,8 +23,8 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   }, [authUser, router, pathname])
 
 
-   // Show loading state while fetching user data
-   if (authLoading || isLoading) {
+  // Show loading state while fetching user data
+  if (authLoading || isLoading) {
     return <div className="min-h-screen w-full bg-primary-100 flex items-center justify-center">Loading...</div>;
   }
 
