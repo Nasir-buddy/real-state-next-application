@@ -72,7 +72,7 @@ export const api = createApi({
     updateTenantSettings: build.mutation<Tenant, { cognitoId: string } & Partial<Tenant>>({
       query: ({ cognitoId, ...updateTenant }) => ({
         url: `tenants/${cognitoId}`, // Tenant update ka API endpoint
-        methods: "PUT", // PUT request use kar rahe hain
+        method: "PUT", // PUT request use kar rahe hain
         body: updateTenant // Updated data bhej rahe hain
       }),
       invalidatesTags: (result) => [{ type: "Tenants", id: result?.id }], // Data cache invalidate kar rahe hain
@@ -81,8 +81,8 @@ export const api = createApi({
     // Manager settings update karne ka mutation define kar rahe hain
     updateManagerSettings: build.mutation<Manager, { cognitoId: string } & Partial<Manager>>({
       query: ({ cognitoId, ...updateManager }) => ({
-        url: `manager/${cognitoId}`, // Manager update ka API endpoint
-        methods: "PUT", // PUT request use kar rahe hain
+        url: `managers/${cognitoId}`, // Manager update ka API endpoint
+        method: "PUT", // PUT request use kar rahe hain
         body: updateManager // Updated data bhej rahe hain
       }),
       invalidatesTags: (result) => [{ type: "Managers", id: result?.id }], // Data cache invalidate kar rahe hain
