@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { IndianRupeeIcon } from 'lucide-react';
 import { Form } from './ui/form';
 import { CustomFormField } from './FormField';
+import { Button } from './ui/button';
 
 const SettingsForm = ({
     initialData,
@@ -43,6 +44,21 @@ const SettingsForm = ({
                     >
                         <CustomFormField name='name' label='Name' disabled={!editMode} />
                         <CustomFormField name='email' label='Email' type='email' disabled={!editMode} />
+                        <CustomFormField name='phoneNumber' label='Phone Number' disabled={!editMode} />
+
+                        <div className='pt-4 flex justify-between'>
+                            <Button
+                            type='button'
+                            onClick={toggleEditMode}
+                            className='bg-secondary-500 text-white hover:bg-secondary-600'
+                            >
+                                {editMode ? "Cancel" : "Edit"}
+
+                            </Button>
+                            {
+                                editMode 
+                            }
+                        </div>
                     </form>
                 </Form>
             </div>
