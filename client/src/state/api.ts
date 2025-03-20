@@ -6,38 +6,43 @@ import { METHODS } from "http";
 import { url } from "inspector";
 import { headers } from "next/headers";
 
+// Redux API slice bana rahe hain jo backend ke sath interact karega
 export const api = createApi({
+  // API base query define kar rahe hain
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
-    prepareHeaders: async (headers) => {
-      const session = await fetchAuthSession();
-      const { idToken } = session.tokens ?? {};
-      if (idToken) {
-        headers.set('Authorization', `Bearer ${idToken}`);
+    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL, // Backend API ka base URL le rahe hain environment variable se
+    prepareHeaders: async (headers) => { // API request ke headers prepare kar rahe hain
+      const session = await fetchAuthSession(); // Auth session fetch kar rahe hain
+      const { idToken } = session.tokens ?? {}; // ID token extract kar rahe hain
+      if (idToken) { 
+        headers.set('Authorization', `Bearer ${idToken}`); // Agar token mila toh Authorization header set kar rahe hain
       }
-      return headers;
+      return headers; // Headers return kar rahe hain
     }
   }),
-  reducerPath: "api",
-  tagTypes: ["Managers", "Tenants"],
+  reducerPath: "api", // Redux store me API ke liye ek unique path define kar rahe hain
+  tagTypes: ["Managers", "Tenants"], // Data caching aur invalidation ke liye tags define kar rahe hain
   endpoints: (build) => ({
+    
+    // Authenticated user ka data fetch karne ka endpoint define kar rahe hain
     getAuthUser: build.query<User, void>({
       queryFn: async (_, _queryApi, _extraoptions, fetchWithBQ) => {
         try {
-          // auth session
+          // Auth session fetch kar rahe hain
           const session = await fetchAuthSession();
-          const { idToken } = session.tokens ?? {};
-          const user = await getCurrentUser();
-          const userRole = idToken?.payload["custom:role"] as string;
+          const { idToken } = session.tokens ?? {}; // ID token extract kar rahe hain
+          const user = await getCurrentUser(); // Current user ka data fetch kar rahe hain
+          const userRole = idToken?.payload["custom:role"] as string; // User ka role fetch kar rahe hain
 
+          // Role ke hisaab se API endpoint set kar rahe hain
           const endpoint =
             userRole === "manager"
-              ? `/managers/${user.userId}`
-              : `/tenants/${user.userId}`
+              ? `/managers/${user.userId}` // Manager ke liye endpoint
+              : `/tenants/${user.userId}` // Tenant ke liye endpoint
 
-          let userDetailsResponse = await fetchWithBQ(endpoint);
+          let userDetailsResponse = await fetchWithBQ(endpoint); // API request bhej rahe hain
 
-          // if u ser dosn't exist, create new user
+          // Agar user database me nahi hai toh naye user ka entry create kar rahe hain
           if (userDetailsResponse.error &&
             userDetailsResponse.error.status === 404
           ) {
@@ -48,40 +53,46 @@ export const api = createApi({
               fetchWithBQ
             )
           }
+
+          // Response return kar rahe hain
           return {
             data: {
-              cognitoInfo: { ...user },
-              userInfo: userDetailsResponse.data as Tenant | Manager,
-              userRole,
+              cognitoInfo: { ...user }, // Cognito user info
+              userInfo: userDetailsResponse.data as Tenant | Manager, // User details API se
+              userRole, // User ka role
             }
           }
         } catch (error: any) {
-          return { error: error.message || "Could not fetch user data." }
+          return { error: error.message || "Could not fetch user data." } // Error handle kar rahe hain
         }
       }
     }),
+
+    // Tenant settings update karne ka mutation define kar rahe hain
     updateTenantSettings: build.mutation<Tenant, { cognitoId: string } & Partial<Tenant>>({
       query: ({ cognitoId, ...updateTenant }) => ({
-        url: `tenants/${cognitoId}`,
-        methods: "PUT",
-        body: updateTenant
+        url: `tenants/${cognitoId}`, // Tenant update ka API endpoint
+        methods: "PUT", // PUT request use kar rahe hain
+        body: updateTenant // Updated data bhej rahe hain
       }),
-      invalidatesTags: (result) => [{ type: "Tenants", id: result?.id }],
+      invalidatesTags: (result) => [{ type: "Tenants", id: result?.id }], // Data cache invalidate kar rahe hain
     }),
 
+    // Manager settings update karne ka mutation define kar rahe hain
     updateManagerSettings: build.mutation<Manager, { cognitoId: string } & Partial<Manager>>({
       query: ({ cognitoId, ...updateManager }) => ({
-        url: `manager/${cognitoId}`,
-        methods: "PUT",
-        body: updateManager
+        url: `manager/${cognitoId}`, // Manager update ka API endpoint
+        methods: "PUT", // PUT request use kar rahe hain
+        body: updateManager // Updated data bhej rahe hain
       }),
-      invalidatesTags: (result) => [{ type: "Managers", id: result?.id }],
+      invalidatesTags: (result) => [{ type: "Managers", id: result?.id }], // Data cache invalidate kar rahe hain
     })
   })
 });
 
+// API hooks export kar rahe hain taaki components me use kar sakein
 export const {
-  useGetAuthUserQuery,
-  useUpdateTenantSettingsMutation, 
-  useUpdateManagerSettingsMutation
+  useGetAuthUserQuery, // User data fetch karne ke liye hook
+  useUpdateTenantSettingsMutation, // Tenant settings update karne ke liye hook
+  useUpdateManagerSettingsMutation // Manager settings update karne ke liye hook
 } = api;
