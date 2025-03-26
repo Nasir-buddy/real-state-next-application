@@ -3,8 +3,8 @@ import {
     getProperties,
     getProperty,
     createProperty
-} from '../controllers/propertyControllers.ts'
-import { authmiddleware } from '../middleware/authMiddleware';
+} from '../controllers/propertyControllers'
+;import { authmiddleware } from '../middleware/authMiddleware';
 import multer from 'multer';
 const storage = multer.memoryStorage();;
 const upload = multer({ storage: storage });
