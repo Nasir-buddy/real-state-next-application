@@ -103,3 +103,5 @@ export const getCurrentResidences = async (
         .json({ message: `Error retrieving manager properties: ${err.message}` });
     }
   };
+
+  
