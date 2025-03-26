@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import { authmiddleware } from './middleware/authMiddleware';
 import tenantRoutes from './routes/tenantRoutes'
 import managerRoutes from './routes/managerRoutes'
+import propertyRoutes from './routes/propertyRoutes.ts'
 // Route Import
 
 // Configuration
@@ -24,7 +25,7 @@ app.use(cors());
 app.get('/', (req, res) => {
     res.send('This is home route')
 });
-
+app.use('/properties', propertyRoutes)
 app.use('/tenants', authmiddleware(['tenant']), tenantRoutes);
 app.use('/manager', authmiddleware(['manager']), managerRoutes);
 // server
