@@ -7,7 +7,7 @@ import morgan from 'morgan';
 import { authmiddleware } from './middleware/authMiddleware';
 import tenantRoutes from './routes/tenantRoutes'
 import managerRoutes from './routes/managerRoutes'
-import propertyRoutes from './routes/propertyRoutes.ts'
+import propertyRoutes from './routes/propertyRoutes'
 // Route Import
 
 // Configuration
