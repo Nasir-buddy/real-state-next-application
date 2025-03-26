@@ -14,9 +14,9 @@ export const getProperties = async (req: Request, res: Response): Promise<void> 
             propertyType,
             squareFeetMin,
             squareFeetMax,
-            Amenities,
+            amenities,
             availableFrom,
-            latitute,
+            latitude,
             longitude,
         } = req.query;
 
@@ -40,7 +40,83 @@ export const getProperties = async (req: Request, res: Response): Promise<void> 
                 Prisma.sql`p."pricePerMonth" <= ${Number(priceMax)}`
             )
         }
+
+        if (beds && beds !== 'any') {
+            whereConditions.push(
+                Prisma.sql`p.beds <= ${Number(beds)}`
+            )
+        }
+
+        if (baths && baths !== 'any') {
+            whereConditions.push(
+                Prisma.sql`p.baths <= ${Number(baths)}`
+            )
+        }
+
+        if (squareFeetMin) {
+            whereConditions.push(
+                Prisma.sql`p."squareFeet" >= ${Number(squareFeetMin)}`
+            )
+        }
+
+        if (squareFeetMax) {
+            whereConditions.push(
+                Prisma.sql`p."squareFeet" <= ${Number(squareFeetMax)}`
+            )
+        }
+
+        if (propertyType && propertyType !== 'any') {
+            whereConditions.push(
+                Prisma.sql`p."propertyType" <= ${propertyType}::"PropertyType"`
+            )
+        }
+
+        if (amenities && amenities !== 'any') {
+            const amenitiesArray = (amenities as string).split(',');
+            whereConditions.push(
+                Prisma.sql`p.amenities @> ${amenitiesArray}`
+            )
+        }
+
+        if (amenities && amenities !== 'any') {
+            const amenitiesArray = (amenities as string).split(',');
+            whereConditions.push(
+                Prisma.sql`p.amenities @> ${amenitiesArray}`
+            )
+        }
+
+        if (availableFrom && availableFrom !== "any") {
+            const availableFromDate =
+              typeof availableFrom === "string" ? availableFrom : null;
+            if (availableFromDate) {
+              const date = new Date(availableFromDate);
+              if (!isNaN(date.getTime())) {
+                whereConditions.push(
+                  Prisma.sql`EXISTS (
+                    SELECT 1 FROM "Lease" l 
+                    WHERE l."propertyId" = p.id 
+                    AND l."startDate" <= ${date.toISOString()}
+                  )`
+                );
+              }
+            }
+          }
+
+          if (latitude && longitude) {
+            const lat = parseFloat(latitude as string);
+            const lng = parseFloat(longitude as string);
+            const radiusInKilometers = 1000;
+            const degrees = radiusInKilometers / 111; // Converts kilometers to degrees
+      
+            whereConditions.push(
+              Prisma.sql`ST_DWithin(
+                l.coordinates::geometry,
+                ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326),
+                ${degrees}
+              )`
+            );
+          }
     } catch (error) {
         res.status(500).json({ message: `Error retrieving Manager: ${error}` })
     }
-};
+}
