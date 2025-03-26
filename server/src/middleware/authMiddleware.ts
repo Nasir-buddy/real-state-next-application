@@ -25,16 +25,18 @@ export const authmiddleware = (allowedRoles: string[]) => {
         }
 
         try {
-            const decoded = jwt.decode(token) as DecodedToken
+            const decoded = jwt.decode(token) as DecodedToken;
             const userRole = decoded["custom:role"] || "";
             req.user = {
                 id: decoded.sub,
                 role: userRole
-            }
+            };
 
-            const hasAccess = allowedRoles.includes(userRole.toLocaleLowerCase());
+            // Ensure allowedRoles is an array and check access
+            const hasAccess = Array.isArray(allowedRoles) && allowedRoles.includes(userRole.toLocaleLowerCase());
             if (!hasAccess) {
                 res.status(401).json({ message: "Access Denied" });
+                return;
             }
         } catch (error) {
             console.error("failed to decode token:", error);
@@ -42,5 +44,5 @@ export const authmiddleware = (allowedRoles: string[]) => {
             return;
         }
         next();
-    }
+    };
 }
