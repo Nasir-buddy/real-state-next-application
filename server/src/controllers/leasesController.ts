@@ -22,4 +22,20 @@ export const getLeases = async (req: Request, res: Response): Promise<void> => {
     }
 };
 
-
+export const getLeasePayments = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const payments = await prisma.payment.findMany({
+            where: {
+                leaseId: Number(id)
+            }
+        });
+        if (payments) {
+            res.json(payments);
+        } else {
+            res.status(404).json({ message: "Lease Payments not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: `Error retrieving Lease Payments: ${error}` })
+    }
+};
