@@ -8,6 +8,7 @@ import { authmiddleware } from './middleware/authMiddleware';
 import tenantRoutes from './routes/tenantRoutes'
 import managerRoutes from './routes/managerRoutes'
 import propertyRoutes from './routes/propertyRoutes'
+import leasesRoutes from './routes/leasesRoutes';
 // Route Import
 
 // Configuration
@@ -26,6 +27,7 @@ app.get('/', (req, res) => {
     res.send('This is home route')
 });
 app.use('/properties', propertyRoutes)
+app.use('/leases', leasesRoutes);
 app.use('/tenants', authmiddleware(['tenant']), tenantRoutes);
 app.use('/manager', authmiddleware(['manager']), managerRoutes);
 // server
