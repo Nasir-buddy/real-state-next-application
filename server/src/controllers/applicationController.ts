@@ -32,7 +32,7 @@ export const listApplications = async (req: Request, res: Response): Promise<voi
                 tenant: true
             }
         });
-        function calculateNextPaymentDate(startDate: Date, paymentFrequency: string): Date {
+        function calculateNextPaymentDate(startDate: Date): Date {
             const today = new Date();
             const nextPaymentDate = new Date(startDate);
             while(nextPaymentDate <= today){
@@ -40,6 +40,30 @@ export const listApplications = async (req: Request, res: Response): Promise<voi
             }
             return nextPaymentDate;
         }
+        const formattedAplication = await Promise.all(
+            applications.map(async (app: any) => {
+                const lease = await prisma.lease.findFirst({
+                    where: {
+                        tenant: {
+                            cognitoId: app.tenantCognitoId
+                        },
+                        propertyId: app.propertyId
+                    },
+                    orderBy: { startDate: "desc" }
+                });
+
+                return {
+                    ...app, 
+                    property: {
+                        ...app.property,
+                        address: app.property.location.address,
+                    },
+                    manager: app.property.manager,
+                    lease: lease ? { ...lease, nextPaymentDate: calculateNextPaymentDate(lease.startDate)} : null
+                }
+            })
+        )
+        res.json(formattedAplication);
         
     } catch (error) {
         res.status(500).json({ message: `Error retrieving Applications: ${error}` })
