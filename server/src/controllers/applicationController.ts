@@ -32,11 +32,15 @@ export const listApplications = async (req: Request, res: Response): Promise<voi
                 tenant: true
             }
         });
-        if(applications){
-            res.json(applications);
-        } else {
-            res.status(404).json({ message: "Applications not found" });
+        function calculateNextPaymentDate(startDate: Date, paymentFrequency: string): Date {
+            const today = new Date();
+            const nextPaymentDate = new Date(startDate);
+            while(nextPaymentDate <= today){
+                nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1);
+            }
+            return nextPaymentDate;
         }
+        
     } catch (error) {
         res.status(500).json({ message: `Error retrieving Applications: ${error}` })
     }
