@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client';
 import { wktToGeoJSON } from '@terraformer/wkt';
 
+
 const prisma = new PrismaClient();
 
 export const getTenant = async (req: Request, res: Response): Promise<void> => {
@@ -75,7 +76,7 @@ export const getCurrentResidences = async (
       });
   
       const residencesWithFormattedLocation = await Promise.all(
-        properties.map(async (property) => {
+        properties.map(async (property: any) => {
           const coordinates: { coordinates: string }[] =
             await prisma.$queryRaw`SELECT ST_asText(coordinates) as coordinates from "Location" where id = ${property.location.id}`;
   
@@ -123,7 +124,7 @@ export const getCurrentResidences = async (
       const propertyIdNumber = Number(propertyId);
       const existingFavorites = tenant.favorites || [];
   
-      if (!existingFavorites.some((fav) => fav.id === propertyIdNumber)) {
+      if (!existingFavorites.some((fav: any) => fav.id === propertyIdNumber)) {
         const updatedTenant = await prisma.tenant.update({
           where: { cognitoId },
           data: {
