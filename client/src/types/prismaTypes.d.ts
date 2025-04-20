@@ -397,8 +397,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.5.0
-   * Query Engine version: 173f8d54f8d52e692c7e27e72a88314ec7aeff60
+   * Prisma Client JS version: 6.6.0
+   * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
    */
   export type PrismaVersion = {
     client: string
@@ -2604,7 +2604,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Property model
-   */ 
+   */
   interface PropertyFieldRefs {
     readonly id: FieldRef<"Property", 'Int'>
     readonly name: FieldRef<"Property", 'String'>
@@ -3803,7 +3803,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Manager model
-   */ 
+   */
   interface ManagerFieldRefs {
     readonly id: FieldRef<"Manager", 'Int'>
     readonly cognitoId: FieldRef<"Manager", 'String'>
@@ -4919,7 +4919,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Tenant model
-   */ 
+   */
   interface TenantFieldRefs {
     readonly id: FieldRef<"Tenant", 'Int'>
     readonly cognitoId: FieldRef<"Tenant", 'String'>
@@ -6027,7 +6027,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Location model
-   */ 
+   */
   interface LocationFieldRefs {
     readonly id: FieldRef<"Location", 'Int'>
     readonly address: FieldRef<"Location", 'String'>
@@ -7138,7 +7138,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Application model
-   */ 
+   */
   interface ApplicationFieldRefs {
     readonly id: FieldRef<"Application", 'Int'>
     readonly applicationDate: FieldRef<"Application", 'DateTime'>
@@ -8308,7 +8308,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Lease model
-   */ 
+   */
   interface LeaseFieldRefs {
     readonly id: FieldRef<"Lease", 'Int'>
     readonly startDate: FieldRef<"Lease", 'DateTime'>
@@ -9481,7 +9481,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Payment model
-   */ 
+   */
   interface PaymentFieldRefs {
     readonly id: FieldRef<"Payment", 'Int'>
     readonly amountDue: FieldRef<"Payment", 'Float'>
@@ -10045,7 +10045,7 @@ export namespace Prisma {
 
 
   /**
-   * Field references 
+   * Field references
    */
 
 
