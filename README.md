@@ -103,7 +103,7 @@ yarn <script-name>
 - **React**: JavaScript library for building user interfaces.
 - **Tailwind CSS**: Scoped and modular CSS styling.
 
-## Planned Features
+## Features
 
 - Property listing and search functionality.
 - User authentication and profile management.
