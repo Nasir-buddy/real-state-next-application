@@ -128,12 +128,3 @@ Contributions are welcome! If you'd like to contribute, please follow these step
    ```bash
    git push origin feature/your-feature-name
    ```
-5. Open a pull request.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-Feel free to update the `README.md` file and folder structure as the project evolves.
