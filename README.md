@@ -39,7 +39,7 @@ This repository contains a **Real E-State Application** built using **Next.js**.
 
 4. Open your browser and visit:
    ```
-   http://localhost:3000
+   http://localhost:5173
    ```
 
 ## Folder Structure
