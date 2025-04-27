@@ -101,7 +101,7 @@ yarn <script-name>
 
 - **Next.js**: React framework for server-side rendering and static site generation.
 - **React**: JavaScript library for building user interfaces.
-- **CSS Modules**: Scoped and modular CSS styling.
+- **Tailwind CSS**: Scoped and modular CSS styling.
 
 ## Planned Features
 
