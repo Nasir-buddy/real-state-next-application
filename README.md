@@ -20,7 +20,7 @@ This repository contains a **Real E-State Application** built using **Next.js**.
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Nasir-buddy/real-e-state.git
+   git clone https://github.com/Nasir-buddy/real-state-next-application.git
    cd real-e-state
    ```
 2. Install dependencies:
